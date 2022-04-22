@@ -1,7 +1,120 @@
-﻿@{
+﻿@model TaskViewModel
+
+@{
     ViewData["Title"] = "Tasks";
 }
 
-<form>
-        jj
-</form>
+<div class="filter">
+    <form class="filter__form">
+        <div class="field-wrapper">
+            <label asp-for="CategoryId" class="label">
+                Choose category
+                <span asp-validation-for="CategoryId" class="field__validation"></span>
+            </label>
+            <select asp-for="CategoryId" class="field">
+                <option value="null">None</option>
+                <option value="1">Education</option>
+                <option value="2">Rest</option>
+            </select>
+        </div>
+        <button class="button">Filter</button>
+    </form>
+</div>
+
+<div class="container-block">
+    <h2 class="title">Add task</h2>
+    <form class="form--add-task">
+        <div class="field-wrapper">
+            <label asp-for="Name" class="label">
+                Enter name
+                <span asp-validation-for="Name" class="field__validation"></span>
+            </label>
+            <input asp-for="Name" placeholder="Name of task" class="field">
+        </div>
+        <div class="field-wrapper">
+            <label asp-for="Deadline" class="label">
+                Enter deadline
+                <span asp-validation-for="Deadline" class="field__validation"></span>
+            </label>
+            <input asp-for="Deadline" type="datetime-local" class="field">
+        </div>
+       <div class="field-wrapper">
+            <label asp-for="CategoryId" class="label">
+                Choose category
+                <span asp-validation-for="CategoryId" class="field__validation"></span>
+            </label>
+            <select asp-for="CategoryId" class="field">
+                <option value="null">None</option>
+                <option value="1">Education</option>
+                <option value="2">Rest</option>
+            </select>
+        </div>
+        <button class="button button--positive">Add</button>
+    </form>
+</div>
+<div class="container-block">
+    <h2 class="title">Current tasks</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Deadline</th>
+                <th>Control</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Read about ASP.NET</td>
+                <td>Education</td>
+                <td>25/04.2022</td>
+                <td>
+                    <a asp-action="Perform" class="control control--perform">Perform</a>
+                    <a asp-action="Delete" class="control control--delete">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Read about ASP.NET</td>
+                <td>Education</td>
+                <td>25/04.2022</td>
+                <td>
+                    <a asp-action="Perform" class="control control--perform">Perform</a>
+                    <a asp-action="Delete" class="control control--delete">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Read about ASP.NET</td>
+                <td>Education</td>
+                <td>25/04.2022</td>
+                <td>
+                    <a asp-action="Perform" class="control control--perform">Perform</a>
+                    <a asp-action="Delete" class="control control--delete">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container-block">
+    <h2 class="title">Completed tasks</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Date Exucation</th>
+                <th>Control</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Read about ASP.NET</td>
+                <td>Education</td>
+                <td>25/04/2022</td>
+                <td>
+                    <a asp-action="Delete" class="control control--delete">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

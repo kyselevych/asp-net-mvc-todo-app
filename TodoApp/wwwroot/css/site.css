@@ -1,4 +1,205 @@
+:root {
+    --default-color: #2a2c37;
+    --accent-color: indigo;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Georgia, sans-serif;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: var(--default-color);
+}
+
+.container {
+    width: 980px;
+    margin: 0 auto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+main {
+    padding: 50px 0;
+}
+
+.container-block {
+    padding: 60px;
+    border-radius: 10px;
+    box-shadow: rgba(0,0,0,0.035) 0 0 15px;
+}
+
+.container-block + .container-block {
+    margin-top: 30px;
+}
+
+.title {
+    color: inherit;
+    margin-bottom: 30px;
+}
+
+.header {
+    color: white;
+    background-color: #171717;
+}
+
+.header > .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__nav {
+    display: flex;
+}
+
+.header__nav a {
+    display: block;
+    padding: 15px 20px;
+    transition: .2s;
+}
+
+.header__nav a:hover {
+    background-color: white;
+    color: #171717;
+}
+
+.header__title {
+    color: inherit;
+    font-size: 16px;
+}
+
+.control {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 8px;
+    color: #fff;
+    transition: .2s;
+}
+
+.control:hover {
+    opacity: .7;
+}
+
+.control--perform {
+    background-color: #60c445;
+}
+
+.control--delete {
+    background-color: #ff4b4b;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.table th,td {
+    padding: 15px 10px;
+    text-align: center;
+    
+}
+
+.table tbody tr {
+    transition: .2s;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f8f8;
+}
+
+.table th {
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid #f8f8f8;
+ }
+
+/* Forms */
+
+.form--add-task {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.form--add-task > * {
+    width: 100%;
+}
+
+.form--add-task > .button {
+    width: 130px;
+}
+
+.label {
     font-size: 14px;
+}
+
+.label + .field {
+    margin-top: 10px;
+}
+.field {
+    width: 100%;
+    display: block;
+    padding: 15px 10px;
+    border: 1px solid #b1b1b1;
+    font-size: 14px;
+    color: inherit;
+    transition: .2s;
+    outline: none;
+}
+
+.field:focus,
+.field:hover {
+   border-color: var(--default-color);
+}
+
+.button {
+    padding: 15px 30px;
+    border: 1px solid #b1b1b1;
+    background-color: transparent;
+    transition: .2s;
+    cursor: pointer;
+    outline: none;
+}
+
+.button:hover {
+    background-color: #171717;
+    color: white;
+}
+
+.button--positive {
+    border-color: #60c445;
+    color: #60c445;
+}
+
+.button--positive:hover {
+    background-color: #60c445;
+    color: white;
+}
+
+/* Filter */
+
+.filter {
+    margin-bottom: 30px;
+}
+
+.filter__form {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.filter__form > *{
+    width: 25%;
 }
