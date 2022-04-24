@@ -1,0 +1,28 @@
+﻿@model List<TaskModel>
+
+<div class="container-block">
+    <h2 class="title">Completed tasks</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Deadline</th>
+                <th>Control</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model)
+            {
+                <tr>
+                    <td>@task.Name</td>
+                    <td>@task.Category?.Name</td>
+                    <td>@task.DateExecution</td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@task.Id" class="control control--delete">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
