@@ -11,15 +11,19 @@
         <div class="container">
             <h1 class="header__title">Todo Application</h1>
             <nav class="header__nav">
-                <a asp-action="">Tasks</a>
-                <a asp-action="">Categories</a>
+                <a asp-controller="Home" asp-action="Index">Tasks</a>
+                <a asp-controller="Categories" asp-action="Index">Categories</a>
             </nav>
         </div>
     </header>
     <main>
         <div class="container">
-             @RenderBody()
+            @RenderBody()
         </div>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 </body>
 </html>

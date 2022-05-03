@@ -25,6 +25,11 @@ a {
     text-decoration: none;
 }
 
+.validate-warning {
+    color: #ff8434;
+    display: block;
+}
+
 main {
     padding: 50px 0;
 }
@@ -125,18 +130,18 @@ main {
 
 /* Forms */
 
-.form--add-task {
+.form--default {
     display: flex;
     align-items: flex-end;
     justify-content: center;
     column-gap: 20px;
 }
 
-.form--add-task > * {
+.form--default > * {
     width: 100%;
 }
 
-.form--add-task > .button {
+.form--default > .button {
     width: 130px;
 }
 
@@ -185,6 +190,12 @@ main {
 .button--positive:hover {
     background-color: #60c445;
     color: white;
+}
+
+.button--go-back {
+    text-align: center;
+    display: block;
+    margin-top: 30px;
 }
 
 /* Filter */
