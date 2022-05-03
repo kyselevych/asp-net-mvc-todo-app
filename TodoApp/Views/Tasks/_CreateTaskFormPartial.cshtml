@@ -1,0 +1,28 @@
+﻿@model CreateTaskFormViewModel
+
+<div class="container-block">
+    <h2 class="title">Add task</h2>
+    <form class="form--default" asp-action="Create">
+        <div class="field-wrapper">
+            <span asp-validation-for="CreateTask.Name" data-valmsg-for="Name"></span>
+            <label for="Name" class="label">Name</label>
+            <input id="Name" name="Name" placeholder="Name of task" class="field">
+        </div>
+        <div class="field-wrapper">
+            <span asp-validation-for="CreateTask.Deadline" data-valmsg-for="Deadline"></span>
+            <label for="Deadline" class="label">Deadline</label>
+            <input id="Deadline" name="Deadline" type="datetime-local" class="field">
+        </div>
+        <div class="field-wrapper">
+            <span asp-validation-for="CreateTask.CategoryId" data-valmsg-for="CategoryId"></span>
+            <label for="CategoryId" class="label">Category</label>
+            <select id="CategoryId" name="CategoryId" class="field">
+                @foreach (var category in Model.CategoriesList)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+        </div>
+        <button class="button button--positive">Add</button>
+    </form>
+</div>

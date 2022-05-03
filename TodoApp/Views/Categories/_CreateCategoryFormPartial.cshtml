@@ -1,0 +1,15 @@
+﻿@model CreateCategoryViewModel
+
+<div class="container-block">
+    <h2 class="title">Create category</h2>
+    <form class="form--default" asp-action="Create" method="post">
+        <div class="field-wrapper">
+            <label asp-for="Name" class="label">
+                Enter name
+                <span asp-validation-for="Name"></span>
+            </label>
+            <input asp-for="Name" placeholder="Name of category" class="field">
+        </div>
+        <button class="button button--positive">Add</button>
+    </form>
+</div>

@@ -1,0 +1,4 @@
+﻿@model CategoriesIndexViewModel
+
+@await Html.PartialAsync("_CreateCategoryFormPartial", Model.CreateCategory)
+@await Html.PartialAsync("_CategoriesTablePartial", Model.CategoriesList)

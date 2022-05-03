@@ -1,0 +1,18 @@
+﻿@model List<FilterCategoryListItemViewModel>
+
+<div class="filter">
+    <form class="filter__form">
+        <div class="field-wrapper">
+            <label for="category" class="label">
+                Choose category
+            </label>
+            <select id="category" name="category" class="field">
+                @foreach(var category in Model)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+        </div>
+        <button class="button">Filter</button>
+    </form>
+</div>
