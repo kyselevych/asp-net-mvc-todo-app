@@ -93,5 +93,18 @@ namespace TodoApp.Controllers
                 return NotFound();
             }
         }
+
+        /*public bool IsCategoryExist(int id)
+        {
+            try
+            {
+                var category = _categoryRepository.GetById(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        } */
     }
 }

@@ -82,9 +82,14 @@ namespace TodoApp.Controllers
             }
         }
 
-        public ActionResult Create(CreateTaskViewModel createTaskViewModel)
+        public ActionResult Create(CreateTaskFormViewModel createTaskFormViewModel)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState); // bad idea
+            //if (!ModelState.IsValid) return BadRequest(ModelState); // bad idea
+            //if (!ModelState.IsValid) return RedirectToAction(nameof(Index));
+
+            var createTaskViewModel = createTaskFormViewModel.CreateTask;
+
+            if (!TryValidateModel(createTaskViewModel)) return BadRequest(ModelState);
 
             try
             {
