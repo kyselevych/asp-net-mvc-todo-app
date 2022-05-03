@@ -25,9 +25,10 @@ a {
     text-decoration: none;
 }
 
-.validate-warning {
+.field-validation-error {
     color: #ff8434;
     display: block;
+    font-size: 14px;
 }
 
 main {

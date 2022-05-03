@@ -9,7 +9,7 @@
     <form class="form--default" asp-action="Edit" method="POST">
         <input type="hidden" asp-for="Id"/>
         <div class="field-wrapper">
-            <span asp-validation-for="Name" class="validate-warning"></span>
+            <span asp-validation-for="Name"></span>
             <label asp-for="Name" class="label">Name</label>
             <input asp-for="Name" placeholder="Name of category" class="field">
         </div>
