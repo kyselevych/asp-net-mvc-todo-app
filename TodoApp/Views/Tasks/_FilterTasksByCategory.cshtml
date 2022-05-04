@@ -7,7 +7,7 @@
                 Choose category
             </label>
             <select id="CategoryId" name="CategoryId" class="field">
-                
+                <option>All</option>
                 @foreach(var category in Model)
                 {
                     <option value="@category.Id">@category.Name</option>

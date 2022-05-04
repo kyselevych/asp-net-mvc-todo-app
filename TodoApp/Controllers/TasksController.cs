@@ -37,9 +37,6 @@ namespace TodoApp.Controllers
             var categoriesListViewModel = mapper.Map<List<CategoryListItemViewModel>>(listCategories);
             var filterCategoriesListViewModel = mapper.Map<List<FilterCategoryListItemViewModel>>(listCategories);
 
-            categoriesListViewModel.Insert(0, new CategoryListItemViewModel() { Id = null, Name = "None" });
-            filterCategoriesListViewModel.Insert(0, new FilterCategoryListItemViewModel() { Id = 0, Name = "All" });
-
             var taskIndexViewModel = new TaskIndexViewModel()
             {
                 CompletedTasksList = completedTasksListViewModel,
