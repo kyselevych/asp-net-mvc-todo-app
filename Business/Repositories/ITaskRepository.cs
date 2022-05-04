@@ -4,7 +4,9 @@ namespace Business.Repositories
 {
     public interface ITaskRepository
     {
-        IEnumerable<TaskModel> GetList(string? status);
+        IEnumerable<TaskModel> GetCurrentTasksList(int? categoryId);
+
+        IEnumerable<TaskModel> GetCompletedTasksList(int? categoryId);
 
         TaskModel GetById(int id);
 

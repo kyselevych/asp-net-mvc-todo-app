@@ -8,56 +8,51 @@ namespace MicrosoftSQLServerDb.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        private string _stringConnection { get; set; }
+        private string stringConnection { get; set; }
 
         public TaskRepository(IConfiguration configuration)
         {
-            _stringConnection = configuration.GetConnectionString("AppDB");
+            stringConnection = configuration.GetConnectionString("AppDB");
         }
 
-        public IEnumerable<TaskModel> GetList(string? status)
+        public IEnumerable<TaskModel> GetCurrentTasksList(int? categoryId = null)
         {
-            string conditionIsDone = "WHERE";
-            string orderBy = "ORDER BY";
-
-            switch (status?.ToLower())
-            {
-                case "completed":
-                    {
-                        conditionIsDone += " IsDone = 1";
-                        orderBy += " DateExecution DESC";
-                        break;
-                    }
-                case "current":
-                    {
-                        conditionIsDone += " IsDone = 0";
-                        orderBy += " CASE WHEN Deadline IS NULL THEN 1 ELSE 0 END";
-                        break;
-                    }
-                default:
-                    {
-                        conditionIsDone = "";
-                        orderBy = "";
-                        break;
-                    }
-            }
+            string categoryCondition = categoryId != null ? "AND t.CategoryId = @CategoryId" : "";
 
             string query = $@"
                 SELECT t.Id, t.Name, t.IsDone, t.Deadline, t.DateExecution, t.CategoryId, c.Id, c.Name
                 FROM Tasks t 
                 LEFT OUTER JOIN Categories c ON (t.CategoryId = c.Id)
-                {conditionIsDone}
-                {orderBy}
+                WHERE IsDone = 0 {categoryCondition}
+                ORDER BY CASE WHEN Deadline IS NULL THEN 1 ELSE 0 END, Deadline
             ";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            if (categoryId != null)
             {
-                return connection.Query<TaskModel, CategoryModel, TaskModel>(query, map: (taskModel, categoryModel) => {
-                    taskModel.Category = categoryModel;
-
-                    return taskModel;
-                });
+                return GetListTasksLeftJoinCategories(query, new { CategoryId = categoryId });
             }
+
+            return GetListTasksLeftJoinCategories(query);
+        }
+
+        public IEnumerable<TaskModel> GetCompletedTasksList(int? categoryId = null)
+        {
+            string categoryCondition = categoryId != null ? "AND t.CategoryId = @CategoryId" : "";
+
+            string query = $@"
+                SELECT t.Id, t.Name, t.IsDone, t.Deadline, t.DateExecution, t.CategoryId, c.Id, c.Name
+                FROM Tasks t 
+                LEFT OUTER JOIN Categories c ON (t.CategoryId = c.Id)
+                WHERE IsDone = 1 {categoryCondition}
+                ORDER BY DateExecution DESC
+            ";
+
+            if (categoryId != null)
+            {
+                return GetListTasksLeftJoinCategories(query, new { CategoryId = categoryId });
+            }
+
+            return GetListTasksLeftJoinCategories(query);
         }
 
         public TaskModel GetById(int id)
@@ -68,9 +63,9 @@ namespace MicrosoftSQLServerDb.Repositories
                 WHERE Id = @Id
             ";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                return connection.QuerySingle<TaskModel>(query, new { Id = id });
+                return connection.QuerySingleOrDefault<TaskModel>(query, new { Id = id });
             }
         }
 
@@ -78,11 +73,9 @@ namespace MicrosoftSQLServerDb.Repositories
         {
             string query = @"DELETE FROM Tasks WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                int affectedRows = connection.Execute(query, new { Id = id });
-
-                if (affectedRows == 0) throw new InvalidOperationException();
+                connection.Execute(query, new { Id = id });
             }
         }
 
@@ -93,11 +86,9 @@ namespace MicrosoftSQLServerDb.Repositories
                 VALUES (@Name, @Deadline, @CategoryId)
             ";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                int affectedRows = connection.Execute(query, task);
-
-                if (affectedRows == 0) throw new InvalidOperationException();
+                connection.Execute(query, task);
             }
         }
 
@@ -109,11 +100,21 @@ namespace MicrosoftSQLServerDb.Repositories
                 WHERE Id = @Id
             ";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                int affectedRows = connection.Execute(query, new { Id = id, DateTimeNow = DateTime.Now });
+                connection.Execute(query, new { Id = id, DateTimeNow = DateTime.Now });
+            }
+        }
 
-                if (affectedRows == 0) throw new InvalidOperationException();
+        private IEnumerable<TaskModel> GetListTasksLeftJoinCategories(string query, object? queryParams = null)
+        {
+            using (var connection = new SqlConnection(stringConnection))
+            {
+                return connection.Query<TaskModel, CategoryModel, TaskModel>(query, map: (taskModel, categoryModel) => {
+                    taskModel.Category = categoryModel;
+
+                    return taskModel;
+                }, queryParams);
             }
         }
     }
