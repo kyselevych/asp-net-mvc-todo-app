@@ -30,7 +30,7 @@ namespace MicrosoftSQLServerDb.Repositories
                     }
                 case "current":
                     {
-                        conditionIsDone = "WHERE IsDone = 0";
+                        conditionIsDone += " IsDone = 0";
                         orderBy += " CASE WHEN Deadline IS NULL THEN 1 ELSE 0 END";
                         break;
                     }

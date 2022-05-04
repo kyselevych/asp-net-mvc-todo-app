@@ -8,34 +8,34 @@ namespace TodoApp.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly ITaskRepository _taskRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper mapper;
+        private readonly ITaskRepository taskRepository;
+        private readonly ICategoryRepository categoryRepository;
 
         public TasksController(ITaskRepository taskRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _taskRepository = taskRepository;
-            _categoryRepository = categoryRepository;
-            _mapper = mapper;
+            this.taskRepository = taskRepository;
+            this.categoryRepository = categoryRepository;
+            this.mapper = mapper;
         }
 
-        public ActionResult Index(int? category)
+        public ActionResult Index(int? categoryId)
         {
-            var currentListTasks = _taskRepository.GetList("current");
-            var completedListTasks = _taskRepository.GetList("completed");
-            var listCategories = _categoryRepository.GetList();
+            var currentListTasks = taskRepository.GetList("current");
+            var completedListTasks = taskRepository.GetList("completed");
+            var listCategories = categoryRepository.GetList();
 
             // Filter by category
-            if (category != null && category > 0)
+            if (categoryId != null && categoryId > 0)
             {
-                currentListTasks = currentListTasks.Where(task => task.CategoryId == category);
-                completedListTasks = completedListTasks.Where(task => task.CategoryId == category);
+                currentListTasks = currentListTasks.Where(task => task.CategoryId == categoryId);
+                completedListTasks = completedListTasks.Where(task => task.CategoryId == categoryId);
             }
 
-            var currentTasksListViewModel = _mapper.Map<List<CurrentTaskItemViewModel>>(currentListTasks);
-            var completedTasksListViewModel = _mapper.Map<List<CompletedTaskItemViewModel>>(completedListTasks);
-            var categoriesListViewModel = _mapper.Map<List<CategoryListItemViewModel>>(listCategories);
-            var filterCategoriesListViewModel = _mapper.Map<List<FilterCategoryListItemViewModel>>(listCategories);
+            var currentTasksListViewModel = mapper.Map<List<CurrentTaskItemViewModel>>(currentListTasks);
+            var completedTasksListViewModel = mapper.Map<List<CompletedTaskItemViewModel>>(completedListTasks);
+            var categoriesListViewModel = mapper.Map<List<CategoryListItemViewModel>>(listCategories);
+            var filterCategoriesListViewModel = mapper.Map<List<FilterCategoryListItemViewModel>>(listCategories);
 
             categoriesListViewModel.Insert(0, new CategoryListItemViewModel() { Id = null, Name = "None" });
             filterCategoriesListViewModel.Insert(0, new FilterCategoryListItemViewModel() { Id = 0, Name = "All" });
@@ -58,7 +58,7 @@ namespace TodoApp.Controllers
         {
             try
             {
-                _taskRepository.Delete(id);
+                taskRepository.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -72,7 +72,7 @@ namespace TodoApp.Controllers
         {
             try
             {
-                _taskRepository.Perform(id);
+                taskRepository.Perform(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -82,6 +82,7 @@ namespace TodoApp.Controllers
             }
         }
 
+        [HttpPost]
         public ActionResult Create(CreateTaskFormViewModel createTaskFormViewModel)
         {
             //if (!ModelState.IsValid) return BadRequest(ModelState); // bad idea
@@ -93,10 +94,11 @@ namespace TodoApp.Controllers
 
             try
             {
-                var taskModel = _mapper.Map<TaskModel>(createTaskViewModel);
-                _taskRepository.Create(taskModel);
+                var taskModel = mapper.Map<TaskModel>(createTaskViewModel);
+                taskRepository.Create(taskModel);
 
                 return RedirectToAction(nameof(Index));
+                
 
             }
             catch

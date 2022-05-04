@@ -8,19 +8,19 @@ namespace TodoApp.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapper _mapper;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly IMapper mapper;
 
         public CategoriesController(ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _categoryRepository = categoryRepository;
-            _mapper = mapper;
+            this.categoryRepository = categoryRepository;
+            this.mapper = mapper;
         }
 
         public ActionResult Index()
         {
-            var categoriesList = _categoryRepository.GetList();
-            var categoriesListViewModel = _mapper.Map<List<CategoryListItemViewModel>>(categoriesList);
+            var categoriesList = categoryRepository.GetList();
+            var categoriesListViewModel = mapper.Map<List<CategoryListItemViewModel>>(categoriesList);
 
             var categoriesIndexViewModel = new CategoriesIndexViewModel()
             {
@@ -34,7 +34,7 @@ namespace TodoApp.Controllers
         {
             try
             {
-                _categoryRepository.Delete(id);
+                categoryRepository.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -48,8 +48,8 @@ namespace TodoApp.Controllers
         {
             try
             {
-                var categoryModel = _categoryRepository.GetById(id);
-                var editCategoryViewModel = _mapper.Map<EditCategoryViewModel>(categoryModel);
+                var categoryModel = categoryRepository.GetById(id);
+                var editCategoryViewModel = mapper.Map<EditCategoryViewModel>(categoryModel);
 
                 return View(editCategoryViewModel);
             }
@@ -66,8 +66,8 @@ namespace TodoApp.Controllers
 
             try
             {
-                var categoryModel = _mapper.Map<CategoryModel>(editCategoryViewModel);
-                _categoryRepository.Update(categoryModel);
+                var categoryModel = mapper.Map<CategoryModel>(editCategoryViewModel);
+                categoryRepository.Update(categoryModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -83,8 +83,8 @@ namespace TodoApp.Controllers
 
             try
             {
-                var categoryModel = _mapper.Map<CategoryModel>(createCategoryViewModel);
-                _categoryRepository.Create(categoryModel);
+                var categoryModel = mapper.Map<CategoryModel>(createCategoryViewModel);
+                categoryRepository.Create(categoryModel);
 
                 return RedirectToAction(nameof(Index));
             }

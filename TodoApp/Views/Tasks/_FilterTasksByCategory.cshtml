@@ -3,10 +3,11 @@
 <div class="filter">
     <form class="filter__form">
         <div class="field-wrapper">
-            <label for="category" class="label">
+            <label for="CategoryId" class="label">
                 Choose category
             </label>
-            <select id="category" name="category" class="field">
+            <select id="CategoryId" name="CategoryId" class="field">
+                
                 @foreach(var category in Model)
                 {
                     <option value="@category.Id">@category.Name</option>
