@@ -19,6 +19,54 @@ namespace TodoApp.Controllers
 
         public ActionResult Index()
         {
+            var categoriesIndexViewModel = GenerateCategoryIndexViewModel();
+
+            return View(categoriesIndexViewModel);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            categoryRepository.Delete(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var categoryModel = categoryRepository.GetById(id);
+            var editCategoryViewModel = mapper.Map<EditCategoryViewModel>(categoryModel);
+
+            return View(editCategoryViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EditCategoryViewModel editCategoryViewModel)
+        {
+            if (!ModelState.IsValid) return View();
+
+            var categoryModel = mapper.Map<CategoryModel>(editCategoryViewModel);
+            categoryRepository.Update(categoryModel);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult Create(CreateCategoryViewModel createCategoryViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var categoriesIndexViewModel = GenerateCategoryIndexViewModel();
+
+                return View(nameof(Index), categoriesIndexViewModel);
+            }
+
+            var categoryModel = mapper.Map<CategoryModel>(createCategoryViewModel);
+            categoryRepository.Create(categoryModel);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private CategoriesIndexViewModel GenerateCategoryIndexViewModel()
+        {
             var categoriesList = categoryRepository.GetList();
             var categoriesListViewModel = mapper.Map<List<CategoryListItemViewModel>>(categoriesList);
 
@@ -27,84 +75,7 @@ namespace TodoApp.Controllers
                 CategoriesList = categoriesListViewModel
             };
 
-            return View(categoriesIndexViewModel);
+            return categoriesIndexViewModel;
         }
-
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                categoryRepository.Delete(id);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
-
-        public ActionResult Edit(int id)
-        {
-            try
-            {
-                var categoryModel = categoryRepository.GetById(id);
-                var editCategoryViewModel = mapper.Map<EditCategoryViewModel>(categoryModel);
-
-                return View(editCategoryViewModel);
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpPost]
-        public ActionResult Edit(EditCategoryViewModel editCategoryViewModel)
-        {
-            if (!ModelState.IsValid) return View();
-
-            try
-            {
-                var categoryModel = mapper.Map<CategoryModel>(editCategoryViewModel);
-                categoryRepository.Update(categoryModel);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
-
-        public ActionResult Create(CreateCategoryViewModel createCategoryViewModel)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState); // bad idea
-
-            try
-            {
-                var categoryModel = mapper.Map<CategoryModel>(createCategoryViewModel);
-                categoryRepository.Create(categoryModel);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
-
-        /*public bool IsCategoryExist(int id)
-        {
-            try
-            {
-                var category = _categoryRepository.GetById(id);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        } */
     }
 }

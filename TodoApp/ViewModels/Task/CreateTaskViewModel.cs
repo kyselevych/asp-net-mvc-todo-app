@@ -12,9 +12,6 @@ namespace TodoApp.ViewModels
         [DataType(DataType.DateTime)]
         public DateTime? Deadline { get; set; }
         
-        [Range(1, int.MaxValue, ErrorMessage = "Category id must be greate than 1")]
-        //[Remote("IsCategoryExist", "Categories", ErrorMessage = "Category is not exist")]
-        //[FromForm(Name = "id")]
         public int? CategoryId { get; set; }
     }
 }

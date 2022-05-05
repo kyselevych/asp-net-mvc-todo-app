@@ -21,16 +21,42 @@ namespace TodoApp.Controllers
 
         public ActionResult Index(int? categoryId)
         {
-            var currentListTasks = taskRepository.GetList("current");
-            var completedListTasks = taskRepository.GetList("completed");
-            var listCategories = categoryRepository.GetList();
+            var taskIndexViewModel = GenerateTaskIndexViewModel(categoryId);
 
-            // Filter by category
-            if (categoryId != null && categoryId > 0)
-            {
-                currentListTasks = currentListTasks.Where(task => task.CategoryId == categoryId);
-                completedListTasks = completedListTasks.Where(task => task.CategoryId == categoryId);
-            }
+            return View(nameof(Index), taskIndexViewModel);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            taskRepository.Delete(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        
+        public ActionResult Perform(int id)
+        {
+            taskRepository.Perform(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreateTaskFormViewModel createTaskFormViewModel)
+        {
+            var createTaskViewModel = createTaskFormViewModel.CreateTask;
+
+            var taskModel = mapper.Map<TaskModel>(createTaskViewModel);
+            taskRepository.Create(taskModel);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private TaskIndexViewModel GenerateTaskIndexViewModel(int? categoryId = null)
+        {
+            var currentListTasks = taskRepository.GetCurrentTasksList(categoryId);
+            var completedListTasks = taskRepository.GetCompletedTasksList(categoryId);
+            var listCategories = categoryRepository.GetList();
 
             var currentTasksListViewModel = mapper.Map<List<CurrentTaskItemViewModel>>(currentListTasks);
             var completedTasksListViewModel = mapper.Map<List<CompletedTaskItemViewModel>>(completedListTasks);
@@ -48,60 +74,7 @@ namespace TodoApp.Controllers
                 }
             };
 
-            return View(nameof(Index), taskIndexViewModel);
-        }
-
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                taskRepository.Delete(id);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
-
-        public ActionResult Perform(int id)
-        {
-            try
-            {
-                taskRepository.Perform(id);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpPost]
-        public ActionResult Create(CreateTaskFormViewModel createTaskFormViewModel)
-        {
-            //if (!ModelState.IsValid) return BadRequest(ModelState); // bad idea
-            //if (!ModelState.IsValid) return RedirectToAction(nameof(Index));
-
-            var createTaskViewModel = createTaskFormViewModel.CreateTask;
-
-            if (!TryValidateModel(createTaskViewModel)) return BadRequest(ModelState);
-
-            try
-            {
-                var taskModel = mapper.Map<TaskModel>(createTaskViewModel);
-                taskRepository.Create(taskModel);
-
-                return RedirectToAction(nameof(Index));
-                
-
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            return taskIndexViewModel;
         }
     }
 }

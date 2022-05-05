@@ -8,18 +8,18 @@ namespace MicrosoftSQLServerDb.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private string _stringConnection { get; set; }
+        private string stringConnection { get; set; }
 
         public CategoryRepository(IConfiguration configuration)
         {
-            _stringConnection = configuration.GetConnectionString("AppDB");
+            stringConnection = configuration.GetConnectionString("AppDB");
         }
 
         public IEnumerable<CategoryModel> GetList()
         {
             string query = @"SELECT Id, Name FROM Categories";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
                 return connection.Query<CategoryModel>(query, connection);
             }
@@ -29,9 +29,9 @@ namespace MicrosoftSQLServerDb.Repositories
         {
             string query = @"SELECT Id, Name FROM Categories WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                return connection.QuerySingle<CategoryModel>(query, new { Id = id });
+                return connection.QuerySingleOrDefault<CategoryModel>(query, new { Id = id });
             }
         }
 
@@ -39,11 +39,9 @@ namespace MicrosoftSQLServerDb.Repositories
         {
             string query = @"DELETE FROM Categories WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                int affectedRows = connection.Execute(query, new { Id = id });
-
-                if (affectedRows == 0) throw new InvalidOperationException();
+                connection.Execute(query, new { Id = id });
             }
         }
 
@@ -51,11 +49,9 @@ namespace MicrosoftSQLServerDb.Repositories
         {
             string query = @"INSERT INTO Categories (Name) VALUES (@Name)";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                int affectedRows = connection.Execute(query, category);
-
-                if (affectedRows == 0) throw new InvalidOperationException();
+                connection.Execute(query, category);
             }   
         }
 
@@ -63,11 +59,9 @@ namespace MicrosoftSQLServerDb.Repositories
         {
             string query = @"UPDATE Categories SET Name = @Name WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_stringConnection))
+            using (var connection = new SqlConnection(stringConnection))
             {
-                int affectedRows = connection.Execute(query, category);
-
-                //if (affectedRows == 0) throw new InvalidOperationException();
+                connection.Execute(query, category);
             }  
         }
     }

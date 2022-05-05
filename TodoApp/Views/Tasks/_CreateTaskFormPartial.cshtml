@@ -17,7 +17,7 @@
             <span asp-validation-for="CreateTask.CategoryId"></span>
             <label asp-for="CreateTask.CategoryId" class="label">Category</label>
             <select asp-for="CreateTask.CategoryId" class="field">
-                <option>None</option>
+                <option value="">None</option>
                 @foreach (var category in Model.CategoriesList)
                 {
                     <option value="@category.Id">@category.Name</option>
