@@ -25,7 +25,7 @@ namespace MicrosoftSQLServerDb.Repositories
             }
         }
 
-        public CategoryModel GetById(int id)
+        public CategoryModel? GetById(int id)
         {
             string query = @"SELECT Id, Name FROM Categories WHERE Id = @Id";
 

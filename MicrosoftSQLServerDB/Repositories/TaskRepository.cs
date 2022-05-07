@@ -55,7 +55,7 @@ namespace MicrosoftSQLServerDb.Repositories
             return GetListTasksLeftJoinCategories(query);
         }
 
-        public TaskModel GetById(int id)
+        public TaskModel? GetById(int id)
         {
             string query = @"
                 SELECT t.Id, t.Name, t.IsDone, t.Deadline, t.DateExecution, t.CategoryId

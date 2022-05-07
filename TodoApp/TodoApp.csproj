@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
     <ProjectReference Include="..\MicrosoftSQLServerDB\MicrosoftSQLServerDb.csproj" />
+    <ProjectReference Include="..\StorageXML\StorageXml.csproj" />
   </ItemGroup>
 
 </Project>
