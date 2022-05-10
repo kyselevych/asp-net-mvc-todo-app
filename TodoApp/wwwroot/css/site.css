@@ -210,8 +210,22 @@ main {
     align-items: flex-end;
     justify-content: center;
     column-gap: 20px;
+    margin-top: 30px;
 }
 
 .filter__form > *{
     width: 25%;
 }
+
+.storage-switch {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.storage-switch__form {
+    display: flex;
+    column-gap: 20px;
+}
+

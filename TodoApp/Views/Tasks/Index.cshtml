@@ -4,7 +4,7 @@
     ViewData["Title"] = "Tasks";
 }
 
-@await Html.PartialAsync("_FilterTasksByCategory", Model.FilterCategoriesList)
 @await Html.PartialAsync("_CreateTaskFormPartial", Model.CreateTaskForm)
+@await Html.PartialAsync("_FilterTasksByCategory", Model.FilterCategoriesList)
 @await Html.PartialAsync("_CurrentTasksTablePartial", Model.CurrentTasksList)
 @await Html.PartialAsync("_CompletedTasksTablePartial", Model.CompletedTasksList)

@@ -17,7 +17,7 @@ namespace StorageXml.Repositories
 
         public CategoryRepository(IConfiguration configuration)
         {
-            categoriesXmlFilePath = configuration.GetSection("XmlStorage")["categoriesPath"];
+            categoriesXmlFilePath = configuration.GetSection("XmlStorage")["CategoriesFilePath"];
 
             InitTasksXmlFile();
         }

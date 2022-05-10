@@ -17,7 +17,7 @@ namespace StorageXml.Repositories
         public TaskRepository(IConfiguration configuraion, ICategoryRepository categoryRepository)
         {
             this.categoryRepository = categoryRepository;
-            this.tasksXmlFilePath = configuraion.GetSection("XmlStorage")["tasksPath"];
+            this.tasksXmlFilePath = configuraion.GetSection("XmlStorage")["TasksFilePath"];
 
             InitTasksXmlFile();
         }
