@@ -21,7 +21,8 @@ namespace TodoApp.Controllers
 
             var requestRefererPath = Request.Headers["Referer"].ToString();
 
-            if (string.IsNullOrEmpty(requestRefererPath)) return RedirectToAction("Index", "Tasks");
+            if (string.IsNullOrEmpty(requestRefererPath)) 
+                return RedirectToAction("Index", "Tasks");
 
             return Redirect(requestRefererPath);
         }

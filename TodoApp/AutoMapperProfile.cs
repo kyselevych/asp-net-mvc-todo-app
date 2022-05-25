@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Business.Entities;
 using TodoApp.ViewModels;
+using TodoApp.GraphQL.DTO;
+using TodoApp.Models;
 
 namespace TodoApp
 {
@@ -26,6 +28,20 @@ namespace TodoApp
             CreateMap<CategoryModel, CategoryListItemViewModel>();
 
             CreateMap<CategoryModel, FilterCategoryListItemViewModel>();
+
+            // GraphQL
+
+            CreateMap<TaskCreateInput, TaskModel>()
+                .ReverseMap();
+
+            CreateMap<CategoryCreateInput, CategoryModel>()
+                .ReverseMap();
+
+            CreateMap<CategoryUpdateInput, CategoryModel>()
+                .ReverseMap();
+
+            CreateMap<StorageSwitchInput, StorageModel>()
+                .ReverseMap();
         }
     }
 }

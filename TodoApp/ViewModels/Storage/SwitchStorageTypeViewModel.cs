@@ -1,5 +1,4 @@
-﻿using TodoApp.Attributes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TodoApp.ViewModels
 {
