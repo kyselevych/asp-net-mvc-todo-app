@@ -10,7 +10,7 @@ namespace Business.Repositories
 
         void Delete(int id);
 
-        void Create(CategoryModel model);
+        int Create(CategoryModel model);
 
         void Update(CategoryModel model);
     }

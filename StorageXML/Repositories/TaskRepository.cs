@@ -22,10 +22,12 @@ namespace StorageXml.Repositories
             InitTasksXmlFile();
         }
 
-        public void Create(TaskModel taskModel)
+        public int Create(TaskModel taskModel)
         {
+            int idNewTask = GetNextTaskIdAndIncrement();
+
             var newTaskElement = new XElement("Task",
-                new XAttribute("id", GetNextTaskIdAndIncrement()),
+                new XAttribute("id", idNewTask),
                 new XElement("Name", taskModel.Name),
                 new XElement("IsDone", 0),
                 new XElement("CategoryId", taskModel.CategoryId),
@@ -35,6 +37,8 @@ namespace StorageXml.Repositories
 
             xmlTasksElement?.Add(newTaskElement);
             SaveXmlDocument();
+
+            return idNewTask;
         }
 
         public void Delete(int id)

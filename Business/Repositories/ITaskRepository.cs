@@ -12,7 +12,7 @@ namespace Business.Repositories
 
         void Delete(int id);
 
-        void Create(TaskModel task);
+        int Create(TaskModel task);
 
         void Perform(int id);
     }

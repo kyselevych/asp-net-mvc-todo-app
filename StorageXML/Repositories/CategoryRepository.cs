@@ -22,15 +22,19 @@ namespace StorageXml.Repositories
             InitTasksXmlFile();
         }
 
-        public void Create(CategoryModel categoryModel)
+        public int Create(CategoryModel categoryModel)
         {
+            int idNewCategory = GetNextCategoryIdAndIncrement();
+
             var newCategoryElement = new XElement("Category",
-               new XAttribute("id", GetNextCategoryIdAndIncrement()),
+               new XAttribute("id", idNewCategory),
                new XElement("Name", categoryModel.Name)
            );
 
             xmlCategoriesElement?.Add(newCategoryElement);
             SaveXmlDocument();
+
+            return idNewCategory;
         }
 
         public void Delete(int id)

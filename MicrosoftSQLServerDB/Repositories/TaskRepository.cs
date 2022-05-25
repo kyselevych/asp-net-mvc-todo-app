@@ -79,16 +79,17 @@ namespace MicrosoftSQLServerDb.Repositories
             }
         }
 
-        public void Create(TaskModel task)
+        public int Create(TaskModel task)
         {
             string query = @"
                 INSERT INTO Tasks (Name, Deadline, CategoryId)
+                OUTPUT INSERTED.Id
                 VALUES (@Name, @Deadline, @CategoryId)
             ";
 
             using (var connection = new SqlConnection(stringConnection))
             {
-                connection.Execute(query, task);
+                return connection.ExecuteScalar<int>(query, task);
             }
         }
 

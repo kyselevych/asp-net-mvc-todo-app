@@ -45,13 +45,16 @@ namespace MicrosoftSQLServerDb.Repositories
             }
         }
 
-        public void Create(CategoryModel category)
+        public int Create(CategoryModel category)
         {
-            string query = @"INSERT INTO Categories (Name) VALUES (@Name)";
+            string query = @"
+                INSERT INTO Categories (Name)
+                OUTPUT INSERTED.Id
+                VALUES (@Name)";
 
             using (var connection = new SqlConnection(stringConnection))
             {
-                connection.Execute(query, category);
+                return connection.ExecuteScalar<int>(query, category);
             }   
         }
 
