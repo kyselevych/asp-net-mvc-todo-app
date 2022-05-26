@@ -1,23 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TodoApp.Infrastructure;
 using TodoApp.ViewModels;
 
 namespace TodoApp.Controllers
 {
     public class StorageController : Controller
     {
-        private readonly IConfiguration configuration;
+        private readonly StorageControl storageControl;
 
-        public StorageController(IConfiguration configuration)
+        public StorageController(StorageControl storageControl)
         {
-            this.configuration = configuration;
+            this.storageControl = storageControl;
         }
 
         public IActionResult Switch(SwitchStorageTypeViewModel switchStorageTypeViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                configuration["TypeStorage"] = switchStorageTypeViewModel.Type;
-            }
+            storageControl.Type = switchStorageTypeViewModel.Type;
 
             var requestRefererPath = Request.Headers["Referer"].ToString();
 

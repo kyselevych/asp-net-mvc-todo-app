@@ -11,7 +11,11 @@ namespace TodoApp.GraphQL.Types
         {
             Field<NonNullGraphType<StringGraphType>, string>()
                 .Name("Type")
-                .Resolve(context => context.Source.Type);
+                .Resolve(context => context.Source.Type.ToString("G"));
+
+            Field<NonNullGraphType<IntGraphType>, int>()
+                .Name("Number")
+                .Resolve(context => (int)context.Source.Type);
         }
     }
 }

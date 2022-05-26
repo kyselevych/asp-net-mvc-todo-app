@@ -19,9 +19,8 @@
     <main>
         <div class="container storage-switch">
             <form asp-controller="Storage" asp-action="Switch" class="storage-switch__form">
-                <select name="type" class="field" value="mssql">
-                    <option value="xml">XML Storage</option>
-                    <option value="mssql">Microsoft Server SQL</option>
+                <select class="field" asp-items="Html.GetEnumSelectList<StorageType>()" name="Type">
+                    
                 </select>
                 <button class="button">Apply</button>
             </form>

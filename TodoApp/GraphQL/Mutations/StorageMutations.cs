@@ -7,18 +7,19 @@ using GraphQL;
 using AutoMapper;
 using TodoApp.Models;
 using System.ComponentModel.DataAnnotations;
+using TodoApp.Infrastructure;
 
 namespace TodoApp.GraphQL.Queries
 {
     public class StorageMutations : ObjectGraphType
     {
-        public readonly IConfiguration configuration;
+        public readonly StorageControl storageControl;
 
         public readonly IMapper mapper;
 
-        public StorageMutations(IConfiguration configuration, IMapper mapper)
+        public StorageMutations(StorageControl storageControl, IMapper mapper)
         {
-            this.configuration = configuration;
+            this.storageControl = storageControl;
             this.mapper = mapper;
 
             Field<StorageType, StorageModel>()
@@ -33,13 +34,21 @@ namespace TodoApp.GraphQL.Queries
                         "StorageSwitchInputType"
                     );
 
-                    var validator = new StorageSwitchInputValidator();
-                    var isValidStorageSwitchInput = validator.Validate(storageSwitchInput);
+                    bool isValidStringValue = Enum.TryParse(
+                        storageSwitchInput.Type,
+                        true,
+                        out Enums.StorageType parsedStorageTypeValue
+                    );
 
-                    if (!isValidStorageSwitchInput.IsValid)
-                        throw new ExecutionError("Type is not valid");
+                    bool isDefinedStorageType = Enum.IsDefined(
+                        typeof(Enums.StorageType),
+                        parsedStorageTypeValue
+                    );
 
-                    configuration["TypeStorage"] = storageSwitchInput.Type;
+                    if (!isValidStringValue || !isDefinedStorageType)
+                        throw new ExecutionError("Storage type is not valid");
+
+                    storageControl.Type = parsedStorageTypeValue;
 
                     var storageModel = mapper.Map<StorageModel>(storageSwitchInput);
 

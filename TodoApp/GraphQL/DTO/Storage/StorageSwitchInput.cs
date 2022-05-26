@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using TodoApp.Enums;
 
 namespace TodoApp.GraphQL.DTO
 {

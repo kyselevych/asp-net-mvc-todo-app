@@ -1,7 +1,9 @@
-﻿namespace TodoApp.Models
+﻿using TodoApp.Enums;
+
+namespace TodoApp.Models
 {
     public class StorageModel
     {
-        public string Type { get; set; }
+        public StorageType Type { get; set; }
     }
 }

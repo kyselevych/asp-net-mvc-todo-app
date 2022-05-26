@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TodoApp.Enums;
 
 namespace TodoApp.ViewModels
 {
     
     public class SwitchStorageTypeViewModel
     {
-        [RegularExpression("xml|mssql", ErrorMessage = "Storage type is invalid")]
-        public string Type { get; set; }
+        public StorageType Type { get; set; }
     }
 }

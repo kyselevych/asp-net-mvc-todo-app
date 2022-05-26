@@ -3,6 +3,7 @@ using Business.Entities;
 using TodoApp.ViewModels;
 using TodoApp.GraphQL.DTO;
 using TodoApp.Models;
+using TodoApp.Infrastructure;
 
 namespace TodoApp
 {
@@ -41,6 +42,9 @@ namespace TodoApp
                 .ReverseMap();
 
             CreateMap<StorageSwitchInput, StorageModel>()
+                .ReverseMap();
+
+            CreateMap<StorageControl, StorageModel>()
                 .ReverseMap();
         }
     }

@@ -8,14 +8,16 @@ using TodoApp.GraphQL;
 using GraphQL.Types;
 using GraphQL.Server;
 using FluentValidation.AspNetCore;
+using TodoApp.Infrastructure;
+using TodoApp.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddFluentValidation();
 
+builder.Services.AddSingleton<StorageControl>();
 builder.Services.AddScoped<MicrosoftSQLServerDb.Repositories.TaskRepository>();
 builder.Services.AddScoped<MicrosoftSQLServerDb.Repositories.CategoryRepository>();
 builder.Services.AddScoped<StorageXml.Repositories.TaskRepository>();
@@ -23,39 +25,42 @@ builder.Services.AddScoped<StorageXml.Repositories.CategoryRepository>();
 
 builder.Services.AddScoped<ITaskRepository>(provider =>
 {
-    string typeStorage = builder.Configuration["TypeStorage"];
+    var storageType = provider.GetRequiredService<StorageControl>().Type;
 
-    switch (typeStorage.ToLower())
+    switch (storageType)
     {
-        case "mssql":
+        case StorageType.Mssql:
         {
-            return provider.GetService<MicrosoftSQLServerDb.Repositories.TaskRepository>();
+            return provider.GetRequiredService<MicrosoftSQLServerDb.Repositories.TaskRepository>();
         }
-        case "xml":
+        case StorageType.Xml:
         {
-            return provider.GetService<StorageXml.Repositories.TaskRepository>();
+            return provider.GetRequiredService<StorageXml.Repositories.TaskRepository>();
         }
         default:
         {
-            return provider.GetService<MicrosoftSQLServerDb.Repositories.TaskRepository>();
+            throw new ArgumentException("Invalid type of storage");
         }
     }
 });
 
 builder.Services.AddScoped<ICategoryRepository>(provider =>
 {
-    string typeStorage = builder.Configuration["TypeStorage"];
+    var storageType = provider.GetRequiredService<StorageControl>().Type;
 
-    switch (typeStorage.ToLower())
+    switch (storageType)
     {
-        case "xml":
+        case StorageType.Mssql:
         {
-            return provider.GetService<StorageXml.Repositories.CategoryRepository>();
+            return provider.GetRequiredService<MicrosoftSQLServerDb.Repositories.CategoryRepository>();
         }
-        case "mssql":
+        case StorageType.Xml:
+        {
+            return provider.GetRequiredService<StorageXml.Repositories.CategoryRepository>();
+        }
         default:
         {
-            return provider.GetService<MicrosoftSQLServerDb.Repositories.CategoryRepository>();
+            throw new ArgumentException("Invalid type of storage");
         }
     }
 });
@@ -63,7 +68,6 @@ builder.Services.AddScoped<ICategoryRepository>(provider =>
 builder.Services.AddScoped<AppSchema>();
 builder.Services.AddScoped<RootQueries>();
 builder.Services.AddScoped<RootMutations>();
-
 builder.Services.AddGraphQL(
     builder =>
         builder
@@ -76,14 +80,8 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(name: "default", pattern: "{controller=Tasks}/{action=Index}/{id?}");
-
 app.UseGraphQL<AppSchema>();
-
 app.Run();
