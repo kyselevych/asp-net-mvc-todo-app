@@ -99,6 +99,25 @@ namespace StorageXml.Repositories
             return currentTasksList;
         }
 
+        public IEnumerable<TaskModel> GetAllTasksList(int? categoryId)
+        {
+            var tasksElements = xmlTasksElement?.Elements("Task");
+
+            if (categoryId != null)
+            {
+                tasksElements = tasksElements?
+                    .Where(task => (string?)task.Element("CategoryId") == categoryId.ToString());
+            }
+
+            var tasksList = tasksElements?
+                .Select(task => ParseXmlElementToTaskModel(task))
+                .OrderByDescending(task => task.Deadline.HasValue)
+                .ThenBy(task => task.Deadline)
+                .ToList();
+
+            return tasksList;
+        }
+
         public void Perform(int id)
         {
             var taskElement = xmlTasksElement?.Elements("Task")

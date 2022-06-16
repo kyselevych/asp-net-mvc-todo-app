@@ -55,6 +55,26 @@ namespace MicrosoftSQLServerDb.Repositories
             return GetListTasksLeftJoinCategories(query);
         }
 
+        public IEnumerable<TaskModel> GetAllTasksList(int? categoryId = null)
+        {
+            string categoryCondition = categoryId != null ? "AND t.CategoryId = @CategoryId" : "";
+
+            string query = $@"
+                SELECT t.Id, t.Name, t.IsDone, t.Deadline, t.DateExecution, t.CategoryId, c.Id, c.Name
+                FROM Tasks t 
+                LEFT OUTER JOIN Categories c ON (t.CategoryId = c.Id)
+                WHERE IsDone = 1 {categoryCondition}
+                ORDER BY CASE WHEN Deadline IS NULL THEN 1 ELSE 0 END, Deadline
+            ";
+
+            if (categoryId != null)
+            {
+                return GetListTasksLeftJoinCategories(query, new { CategoryId = categoryId });
+            }
+
+            return GetListTasksLeftJoinCategories(query);
+        }
+
         public TaskModel? GetById(int id)
         {
             string query = @"

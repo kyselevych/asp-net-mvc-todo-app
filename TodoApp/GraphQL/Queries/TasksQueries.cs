@@ -15,6 +15,19 @@ namespace TodoApp.GraphQL.Queries
             this.taskRepository = taskRepository;
 
             Field<ListGraphType<TaskType>, IEnumerable<TaskModel>>()
+                .Name("All")
+                .Argument<IntGraphType, int?>(
+                    "CategoryId",
+                    "Argument CategoryId for All Tasks"
+                )
+                .Resolve(context =>
+                {
+                    int? categoryId = context.GetArgument<int?>("CategoryId");
+
+                    return taskRepository.GetAllTasksList(categoryId);
+                });
+
+            Field<ListGraphType<TaskType>, IEnumerable<TaskModel>>()
                 .Name("Currents")
                 .Argument<IntGraphType, int?>(
                     "CategoryId",
