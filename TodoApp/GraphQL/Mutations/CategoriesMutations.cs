@@ -65,11 +65,10 @@ namespace TodoApp.GraphQL.Queries
                 .Resolve(context =>
                 {
                     int id = context.GetArgument<int>("Id");
-                    var categoryModel = categoryRepository.GetById(id);
 
                     categoryRepository.Delete(id);
 
-                    return categoryModel;
+                    return categoryRepository.GetById(id);
                 });
         }
     }

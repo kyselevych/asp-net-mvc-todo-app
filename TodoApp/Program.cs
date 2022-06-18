@@ -23,6 +23,17 @@ builder.Services.AddScoped<MicrosoftSQLServerDb.Repositories.CategoryRepository>
 builder.Services.AddScoped<StorageXml.Repositories.TaskRepository>();
 builder.Services.AddScoped<StorageXml.Repositories.CategoryRepository>();
 
+string corsPolicy = "corsPolicy";
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy(corsPolicy, builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddScoped<ITaskRepository>(provider =>
 {
     var storageType = provider.GetRequiredService<StorageControl>().Type;
@@ -81,6 +92,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors(corsPolicy);
 app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Tasks}/{action=Index}/{id?}");
 app.UseGraphQL<AppSchema>();

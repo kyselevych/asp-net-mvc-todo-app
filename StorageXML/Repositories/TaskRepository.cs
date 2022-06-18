@@ -111,8 +111,6 @@ namespace StorageXml.Repositories
 
             var tasksList = tasksElements?
                 .Select(task => ParseXmlElementToTaskModel(task))
-                .OrderByDescending(task => task.Deadline.HasValue)
-                .ThenBy(task => task.Deadline)
                 .ToList();
 
             return tasksList;

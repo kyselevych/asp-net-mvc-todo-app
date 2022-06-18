@@ -43,11 +43,10 @@ namespace TodoApp.GraphQL.Queries
                 .Resolve(context =>
                 {
                     int id = context.GetArgument<int>("Id");
-                    var taskModel = taskRepository.GetById(id);
 
                     taskRepository.Delete(id);
 
-                    return taskModel;
+                    return taskRepository.GetById(id);
                 });
 
             Field<TaskType>()
@@ -56,11 +55,10 @@ namespace TodoApp.GraphQL.Queries
                 .Resolve(context =>
                 {
                     int id = context.GetArgument<int>("Id");
-                    var taskModel = taskRepository.GetById(id);
 
                     taskRepository.Perform(id);
 
-                    return taskModel;
+                    return taskRepository.GetById(id);
                 });
         }
     }
